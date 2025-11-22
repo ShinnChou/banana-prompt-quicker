@@ -463,8 +463,10 @@
                 transform: none;
             }
 
-            .copy-overlay {
-                display: none;
+            /* Allow overlay to be shown via class on mobile */
+            .card.active .copy-overlay {
+                opacity: 1;
+                pointer-events: auto;
             }
         }
 
