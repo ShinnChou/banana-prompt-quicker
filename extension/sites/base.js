@@ -130,7 +130,88 @@ window.BananaSites.Base = class BaseSite {
         window.addEventListener('replacestate', f);
     }
 
+    isEditableElement(el) {
+        if (!el) return false;
+        return el.tagName === 'TEXTAREA' ||
+            (el.tagName === 'INPUT' && ['text', 'search', 'email', 'url'].includes(el.type)) ||
+            el.isContentEditable;
+    }
+
+    handleInputMissing() {
+        console.warn('Banana: No prompt input found.');
+    }
+
     async insertPrompt(prompt) {
-        console.warn('insertPrompt not implemented');
+        const el = await this.findPromptInput();
+        if (!el || !this.isEditableElement(el)) {
+            this.handleInputMissing();
+            return;
+        }
+
+        if (el.isContentEditable) {
+            const selection = window.getSelection();
+            let inserted = false;
+
+            if (selection.rangeCount > 0) {
+                const range = selection.getRangeAt(0);
+                if (el.contains(range.commonAncestorContainer)) {
+                    range.deleteContents();
+
+                    const lines = prompt.split('\n');
+                    const fragment = document.createDocumentFragment();
+
+                    lines.forEach((line, index) => {
+                        fragment.appendChild(document.createTextNode(line));
+                        if (index < lines.length - 1) {
+                            fragment.appendChild(document.createElement('br'));
+                        }
+                    });
+
+                    range.insertNode(fragment);
+                    range.collapse(false);
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                    inserted = true;
+                }
+            }
+
+            if (!inserted) {
+                const htmlContent = prompt.split('\n').map(line => {
+                    const escaped = line
+                        .replace(/&/g, '&amp;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;');
+                    return `<p>${escaped || '<br>'}</p>`;
+                }).join('');
+                el.innerHTML += htmlContent;
+
+                // Move cursor to end
+                const range = document.createRange();
+                const sel = window.getSelection();
+                range.selectNodeContents(el);
+                range.collapse(false);
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }
+
+            el.dispatchEvent(new Event('input', { bubbles: true }));
+        } else {
+            const start = el.selectionStart;
+            const end = el.selectionEnd;
+            const currentValue = el.value;
+
+            const newValue = currentValue.substring(0, start) + prompt + currentValue.substring(end);
+            el.value = newValue;
+
+            const newCursorPos = start + prompt.length;
+            el.setSelectionRange(newCursorPos, newCursorPos);
+
+            el.dispatchEvent(new Event('input', { bubbles: true }));
+            el.focus();
+        }
+
+        if (this.modal) {
+            this.modal.hide();
+        }
     }
 };

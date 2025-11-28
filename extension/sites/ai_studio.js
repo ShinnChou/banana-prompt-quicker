@@ -49,16 +49,4 @@ class AIStudioSite extends window.BananaSites.Base {
         const p = target.parentElement
         p.parentElement.insertBefore(btn, p)
     }
-
-    async insertPrompt(promptText) {
-        const textarea = await this.findPromptInput();
-        if (textarea) {
-            textarea.value = promptText;
-            textarea.dispatchEvent(new Event('input', { bubbles: true }));
-            textarea.focus();
-            const length = promptText.length;
-            textarea.setSelectionRange(length, length);
-            if (this.modal) this.modal.hide();
-        }
-    }
 };

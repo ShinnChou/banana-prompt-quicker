@@ -65,31 +65,4 @@ class GeminiSite extends window.BananaSites.Base {
 
         return btn;
     }
-
-    async insertPrompt(promptText) {
-        const textarea = await this.findPromptInput();
-        if (textarea) {
-            const lines = promptText.split('\n');
-            const htmlContent = lines.map(line => {
-                const escaped = line
-                    .replace(/&/g, '&amp;')
-                    .replace(/</g, '&lt;')
-                    .replace(/>/g, '&gt;');
-                return `<p>${escaped || '<br>'}</p>`;
-            }).join('');
-
-            textarea.innerHTML = htmlContent;
-            textarea.dispatchEvent(new Event('input', { bubbles: true }));
-
-            textarea.focus();
-            const range = document.createRange();
-            const sel = window.getSelection();
-            range.selectNodeContents(textarea);
-            range.collapse(false);
-            sel.removeAllRanges();
-            sel.addRange(range);
-
-            if (this.modal) this.modal.hide();
-        }
-    }
 };
