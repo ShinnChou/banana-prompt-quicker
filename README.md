@@ -128,6 +128,11 @@ https://github.com/bxb100/Scripts/raw/refs/heads/main/banana-prompt-quicker/scri
       <br>
       <strong><a href="https://glidea.zenfeed.xyz/">我的其它项目</a></strong>
     </td>
+    <td align="center">
+      <img src="https://github.com/glidea/banana-prompt-quicker/blob/main/images/sponsor.png?raw=true" width="300">
+      <br>
+      <strong>🧋请喝杯奶茶</strong>
+    </td>
   </tr>
   <tr>
     <td align="center" colspan="2">
