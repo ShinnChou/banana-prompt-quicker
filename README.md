@@ -72,6 +72,14 @@ https://github.com/bxb100/Scripts/raw/refs/heads/main/banana-prompt-quicker/scri
   * [MAY] Svelte 重构
   * ...
 
+
+### V1.5.0
+
+  * 支持查看最近更新的 Prompt
+  * 支持 NSFW 过滤
+  * 新手引导页
+  * 卸载原因调研页
+
 ### V1.4.0
 <img src="https://github.com/glidea/banana-prompt-quicker/blob/main/images/v1.4.0-promo.png?raw=true" width="300">
 

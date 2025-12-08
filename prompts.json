@@ -231,6 +231,16 @@
         "sub_category": "穿搭"
     },
     {
+        "title": "儿童图书插画风格蜡笔画",
+        "preview": "https://cdn.jsdelivr.net/gh/glidea/banana-prompt-quicker@main/images/childrens_book_crayon_style.jpg",
+        "prompt": "DRAWING a drawing of [Character], crayon on white paper, in the style of a children's book illustration – simple, cute, and full-color, with [two glitter accent colors] glitter accents and high detail.",
+        "author": "@GoSailGlobal",
+        "link": "https://x.com/GoSailGlobal/status/1996505714404036617",
+        "mode": "generate",
+        "category": "有趣",
+        "created": "2025-12-08T22:37:30+08:00"
+    },
+    {
         "title": "时空复现",
         "preview": "https://pbs.twimg.com/media/G6YkWY7WYAAvjeq.jpg?format=jpg&name=large",
         "prompt": "创建 {地理坐标}，{什么时候} 的图像",
@@ -340,6 +350,17 @@
         "link": "https://x.com/dotey/status/1995190286775881780",
         "mode": "generate",
         "category": "有趣"
+    },
+    {
+        "title": "3D等距视角家庭办公插画",
+        "preview": "https://cdn.jsdelivr.net/gh/glidea/banana-prompt-quicker@main/images/home_office_isometric_3d.jpg",
+        "prompt": "请根据你对我的了解，生成一副我正在家办公的3D等距视角的彩色插画，包含室内的各种细节描写，画面呈现出圆润、精致、趣味盎然的视觉风格。--ar 1:1 [附加细节: 我有3显示器，还有一只比熊犬]",
+        "author": "@dotey",
+        "link": "https://x.com/dotey/status/1995945183037587484",
+        "mode": "generate",
+        "category": "生活",
+        "sub_category": "插画",
+        "created": "2025-12-08T14:40:05+08:00"
     },
     {
         "title": "天气应用3D卡通界面",

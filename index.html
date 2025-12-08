@@ -1016,6 +1016,7 @@
                     </div>
                 </div>
 
+                <button class="filter-btn" data-filter="recent-week">最近一周</button>
                 <button class="filter-btn" data-filter="generate">文生图</button>
                 <button class="filter-btn" data-filter="edit">编辑</button>
             </div>
@@ -1098,6 +1099,7 @@
         let allPrompts = [];
         let currentFilter = 'all';
         let currentCategory = 'all';
+        let recentWeekEnabled = false;
 
         // DOM Elements
         const grid = document.getElementById('promptsGrid');
@@ -1253,7 +1255,11 @@
         function filterPrompts() {
             const searchTerm = searchInput.value.toLowerCase();
 
-            const filtered = allPrompts.filter(prompt => {
+            // Calculate one week ago timestamp
+            const oneWeekAgo = new Date();
+            oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+            let filtered = allPrompts.filter(prompt => {
                 const matchesSearch = prompt.title.toLowerCase().includes(searchTerm) ||
                     prompt.author.toLowerCase().includes(searchTerm) ||
                     prompt.prompt.toLowerCase().includes(searchTerm) ||
@@ -1263,8 +1269,28 @@
 
                 const matchesCategory = currentCategory === 'all' || prompt.category === currentCategory;
 
-                return matchesSearch && matchesMode && matchesCategory;
+                // Filter by recent week if enabled
+                let matchesRecentWeek = true;
+                if (recentWeekEnabled) {
+                    if (!prompt.created) {
+                        matchesRecentWeek = false;
+                    } else {
+                        const createdDate = new Date(prompt.created);
+                        matchesRecentWeek = createdDate >= oneWeekAgo;
+                    }
+                }
+
+                return matchesSearch && matchesMode && matchesCategory && matchesRecentWeek;
             });
+
+            // Sort by created time (newest first) if recent week is enabled
+            if (recentWeekEnabled) {
+                filtered.sort((a, b) => {
+                    const dateA = a.created ? new Date(a.created) : new Date(0);
+                    const dateB = b.created ? new Date(b.created) : new Date(0);
+                    return dateB - dateA;
+                });
+            }
 
             renderPrompts(filtered);
         }
@@ -1293,13 +1319,30 @@
             btn.addEventListener('click', () => {
                 const clickedFilter = btn.dataset.filter;
 
+                // Handle "recent-week" button separately
+                if (clickedFilter === 'recent-week') {
+                    if (btn.classList.contains('active')) {
+                        btn.classList.remove('active');
+                        recentWeekEnabled = false;
+                    } else {
+                        btn.classList.add('active');
+                        recentWeekEnabled = true;
+                    }
+                    filterPrompts();
+                    return;
+                }
+
                 // 如果点击的是已选中的按钮，取消选中（显示全部）
                 if (btn.classList.contains('active')) {
                     btn.classList.remove('active');
                     currentFilter = 'all';
                 } else {
-                    // 取消其他按钮的选中状态
-                    filterBtns.forEach(b => b.classList.remove('active'));
+                    // 取消 generate/edit 按钮的选中状态（不影响 recent-week）
+                    filterBtns.forEach(b => {
+                        if (b.dataset.filter !== 'recent-week') {
+                            b.classList.remove('active');
+                        }
+                    });
                     // 选中当前按钮
                     btn.classList.add('active');
                     currentFilter = clickedFilter;
