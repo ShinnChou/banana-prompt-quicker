@@ -76,6 +76,9 @@ https://github.com/bxb100/Scripts/raw/refs/heads/main/banana-prompt-quicker/scri
   * [MAY] Svelte 重构
   * ...
 
+### V1.6.0
+
+  * 提示词支持添加参考图
 
 ### V1.5.0
 
